@@ -1,4 +1,4 @@
-# RecipeBook
+# Book of recipes
 App for managing your favourite recipes.
 
 ## Documentation
