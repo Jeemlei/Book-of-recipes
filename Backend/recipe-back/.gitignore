@@ -4,6 +4,7 @@
 
 # production
 /build
+/static
 
 # misc
 .env.local

@@ -19,7 +19,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-full": "npm run build && rm -rf ../../Backend/recipe-back/build && cp -r build ../../Backend/recipe-back",
+    "build-full": "npm run build && rm -rf ../../Backend/recipe-back/build && mv build static && cp -r static ../../Backend/recipe-back && rm -rf static",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint \"./src/**/*.{ts,tsx}\""
