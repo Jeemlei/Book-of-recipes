@@ -3,5 +3,5 @@
 
 | Date | Hours | Description |
 | :----: | :----- | :----- |
-| 4.7. | 2,5 | Git-repo, SRS, brainstorming, frontend foundation |
-| Total | 2,5 | |
+| 4.7. | 3 | Git-repo, SRS, brainstorming, frontend foundation, eslint |
+| Total | 3 | |
