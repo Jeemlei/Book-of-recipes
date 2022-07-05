@@ -7,7 +7,8 @@
 		"start": "cross-env NODE_ENV=production node index.ts",
 		"dev": "cross-env NODE_ENV=development ts-node-dev index.ts",
 		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-		"tsc": "tsc"
+		"tsc": "tsc",
+		"lint": "eslint --ext .ts ."
 	},
 	"author": "Eemeli Ingervo & Oskari Juvakka",
 	"license": "CC-BY-SA-4.0",
