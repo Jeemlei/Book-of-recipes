@@ -26,12 +26,15 @@
 		"jest": "^28.1.2",
 		"prettier": "^2.7.1",
 		"supertest": "^6.2.4",
+		"ts-jest": "^28.0.5",
 		"ts-node": "^10.8.2",
 		"ts-node-dev": "^2.0.0",
 		"typescript": "^4.7.4"
 	},
 	"jest": {
-		"testEnvironment": "node"
+		"testEnvironment": "node",
+		"preset": "ts-jest",
+		"modulePathIgnorePatterns": ["build"]
 	},
 	"dependencies": {
 		"@types/supertest": "^2.0.12",

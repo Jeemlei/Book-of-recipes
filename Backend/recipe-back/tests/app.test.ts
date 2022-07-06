@@ -8,7 +8,7 @@ import app from '../src/app'
 
 const api = supertest(app)
 
-test('server is running', async () => {
-	const response = await api.get('/').expect(200)
-	expect(response).toBeDefined()
+test('example test', async () => {
+	await api.get('/').expect(302)
+	expect.anything()
 })
