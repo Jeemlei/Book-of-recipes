@@ -10,6 +10,20 @@
 		"plugin:@typescript-eslint/recommended-requiring-type-checking",
 		"prettier"
 	],
+	"overrides": [
+		{
+			"files": ["tests/**"],
+			"plugins": ["jest"],
+			"extends": ["plugin:jest/recommended"],
+			"rules": {
+				"jest/no-disabled-tests": "error",
+				"jest/no-focused-tests": "error",
+				"jest/no-identical-title": "error",
+				"jest/prefer-to-have-length": "warn",
+				"jest/valid-expect": "error"
+			}
+		}
+	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"project": "./tsconfig.json"
