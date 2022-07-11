@@ -1,0 +1,198 @@
+{
+	"recipes": [{
+		"id": 0,
+		"name": "Chicken tortilla",
+		"umbrella_id": 0,
+		"owner_id": 0,
+		"cookingtime": 15,
+		"servings": 2,
+		"ingredients": [{
+				"ingredient_id": 0,
+				"amout": 30,
+				"unit": "g"
+			},
+			{
+				"ingredient_id": 1,
+				"amout": 10,
+				"unit": "ml"
+			},
+			{
+				"ingredient_id": 2,
+				"amout": 45,
+				"unit": "ml"
+			},
+			{
+				"ingredient_id": 3,
+				"amout": 2,
+				"unit": "pcs"
+			},
+			{
+				"ingredient_id": 4,
+				"amout": 120,
+				"unit": "ml"
+			},
+			{
+				"ingredient_id": 5,
+				"amout": 60,
+				"unit": "ml"
+			},
+			{
+				"ingredient_id": 6,
+				"amout": 60,
+				"unit": "ml"
+			}
+		],
+		"steps": [
+			"Heat medium skillet over medium-high heat; coat with non-stick cooking spray.",
+			"Add chicken; sprinkle fajita seasoning over chicken.",
+			"Cook, stirring frequently, 4 minutes or until chicken is cooked through. Set aside to cool.",
+			"Spread cream cheese over tortillas; top with lettuce, chicken and cheese.",
+			"Fold two outside edges over filling; roll up burrito-style. Cut diagonally in half.",
+			"Serve with salsa."
+		],
+		"category_ids": [1, 3]
+	}, {
+		"id": 1,
+		"name": "Pico de Gallo (Fresh Salsa)",
+		"umbrella_id": 1,
+		"owner_id": 0,
+		"general_name": "Salsa",
+		"cookingtime": 15,
+		"servings": 14,
+		"ingredients": [{
+			"ingredient_id": 7,
+			"amout": 3,
+			"unit": "pcs"
+		}, {
+			"ingredient_id": 8,
+			"amout": 0.5,
+			"unit": "pcs"
+		}, {
+			"ingredient_id": 9,
+			"amout": 1,
+			"unit": "pcs"
+		}, {
+			"ingredient_id": 10,
+			"amout": 1,
+			"unit": "pcs"
+		}, {
+			"ingredient_id": 11,
+			"amout": 120,
+			"unit": "ml"
+		}, {
+			"ingredient_id": 12,
+			"amout": 1,
+			"unit": "ml"
+		}, {
+			"ingredient_id": 13,
+			"amout": 1,
+			"unit": "ml"
+		}, {
+			"ingredient_id": 14,
+			"amout": 1,
+			"unit": "ml"
+		}, {
+			"ingredient_id": 15,
+			"amout": 1,
+			"unit": "ml"
+		}],
+		"steps": [
+			"Roughly chop the tomatoes, chili peppers, and onions. Set aside some of the seeds from the peppers. If the salsa isn't hot enough, you can add a few for more heat.",
+			"Place all of the ingredients in the bowl of a food processor fitted with the blade. Pulse only a few times, just enough to finely dice the ingredients and not enough to purée. If you don't have a food processor, you can finely dice by hand.",
+			"Place in a serving bowl. Add salt and pepper to taste. If the chilis make the salsa too hot, add some more chopped tomato. If it's not hot enough, carefully add a few of the seeds from the chilis, or add a little more ground cumin.",
+			"If you like, let the salsa sit for an hour (room temperature or chilled) for the flavors to combine.",
+			"Serve with chips, tortillas, tacos, burritos, tostadas, quesadillas, or pinto or black beans. The salsa will keep refrigerated for up to 5 days."
+		],
+		"category_ids": [6]
+	}],
+
+	"umbrella_titles": {
+		"0": "Tortilla",
+		"1": "Salsa"
+	},
+
+	"categories": {
+		"0": "breakfast",
+		"1": "lunch",
+		"2": "snack",
+		"3": "dinner",
+		"4": "dessert",
+		"5": "evening snack",
+		"6": "sidedish",
+		"7": "other"
+	},
+
+	"ingredients": [{
+			"id": 0,
+			"name": "Boneless, skinless chicken breast halves, cut into 1/2-inch pieces"
+		},
+		{
+			"id": 1,
+			"name": "Fajita seasoning"
+		},
+		{
+			"id": 2,
+			"name": "Light cream cheese or chive cream cheese, softened"
+		},
+		{
+			"id": 3,
+			"name": "(10-inch) flour tortillas"
+		},
+		{
+			"id": 4,
+			"name": "Packed shredded lettuce"
+		},
+		{
+			"id": 5,
+			"name": "Shredded Cheddar Cheese"
+		},
+		{
+			"id": 6,
+			"name": "Salsa",
+			"recipe_id": 1
+		},
+		{
+			"id": 7,
+			"name": "Tomato"
+		},
+		{
+			"id": 8,
+			"name": "Red onion"
+		},
+		{
+			"id": 9,
+			"name": "Jalapeno pepper"
+		},
+		{
+			"id": 10,
+			"name": "Lime juice"
+		},
+		{
+			"id": 11,
+			"name": "Chopped cilantro"
+		},
+		{
+			"id": 12,
+			"name": "Salt"
+		},
+		{
+			"id": 13,
+			"name": "Black pepper"
+		},
+		{
+			"id": 14,
+			"name": "Oregano"
+		},
+		{
+			"id": 15,
+			"name": "Ground cumin"
+		}
+	],
+
+	"users": [{
+		"id": 0,
+		"username": "example_user",
+		"psswrd_hash": "$2a$09$h5Qe5SztGtUNHEEdRseS2exmo7qhwkCcTRk0rl1ka/sCoDIePWzYa",
+		"recipe_ids": [0, 1]
+	}]
+}
