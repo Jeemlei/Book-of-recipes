@@ -25,6 +25,7 @@ The basic idea of the app is to help the user manage their favourite recipes and
   - Based on favourite recipes
   - Every time as different as possible
 - Scale the portion size
+- Create shopping list
 - Search other users
 - Comment on recipes
 - Follow other users
