@@ -8,4 +8,5 @@
 | | 0.5| Linting in Github Actions |
 | 6.7. | 2 | Setting up foundations for unit and E2E testing, testing to actions |
 | 11.7. | 2 | Designing database schema |
-| Total | 9 | |
+| | 1 | Planning |
+| Total | 10 | |
