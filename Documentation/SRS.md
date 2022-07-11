@@ -16,6 +16,10 @@ The basic idea of the app is to help the user manage their favourite recipes and
     - Add/Modify/Delete recipes
     - Change profile info and password etc.
 
+### Database
+
+- [Example data](example-data.json)
+
 ### Possible additional features
 
 - Multilanguage support
