@@ -8,4 +8,6 @@
 | 6.7. | 2 | Setting up foundations for unit and E2E testing, testing to actions |
 | 11.7. | 2 | Designing database schema |
 | | 1 | Planning |
-| Total | 10.5 | |
+| 12.7. | 1 | graphql setup |
+| | 0.5 | configs, jest coverage |
+| Total | 12 | |
