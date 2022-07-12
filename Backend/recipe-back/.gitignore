@@ -5,6 +5,7 @@
 # production
 /build
 /static
+/coverage
 
 # misc
 .env
