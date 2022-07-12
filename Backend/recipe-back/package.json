@@ -6,9 +6,9 @@
 	"scripts": {
 		"start": "cross-env NODE_ENV=production node build/src/index.js",
 		"dev": "cross-env NODE_ENV=development ts-node-dev src/index.ts",
-		"test": "cross-env NODE_ENV=test jest --verbose --runInBand",
-		"tsc": "tsc",
-		"full-build": "tsc && cd ../../Frontend/recipe-front && npm run full-build",
+		"test": "cross-env NODE_ENV=test jest --verbose --runInBand --coverage",
+		"tsc": "rm -rf build && tsc",
+		"full-build": "npm run tsc && cd ../../Frontend/recipe-front && npm run full-build",
 		"lint": "eslint --ext .ts ."
 	},
 	"author": "Eemeli Ingervo & Oskari Juvakka",
@@ -37,7 +37,12 @@
 		"preset": "ts-jest",
 		"modulePathIgnorePatterns": [
 			"build"
-		]
+		],
+		"coverageThreshold": {
+      "global": {
+        "lines": 60
+      }
+    }
 	},
 	"dependencies": {
 		"apollo-server-express": "^3.10.0",
