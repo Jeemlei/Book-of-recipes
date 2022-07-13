@@ -11,4 +11,4 @@
 | | 1 | Planning |
 | 12.7. | 1,5 | More brainstorming db, MongoDB setup |
 | 13.7. | 1 | Logging and tests |
-| Total | 11,5 | |
+| Total | 12,5 | |
