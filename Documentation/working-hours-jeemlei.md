@@ -9,5 +9,6 @@
 | 6.7. | 2 | Setting up foundations for unit and E2E testing, testing to actions |
 | 11.7. | 2 | Designing database schema |
 | | 1 | Planning |
-| | 1,5 | More brainstorming db, MongoDB setup |
+| 12.7. | 1,5 | More brainstorming db, MongoDB setup |
+| 13.7. | 1 | Logging and tests |
 | Total | 11,5 | |
