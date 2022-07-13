@@ -23,7 +23,7 @@ mongoose
 			})
 	})
 	.catch((error: Error) => {
-		console.log(`error connecting to MongoDB: ${error.message}`)
+		logger.info(`error connecting to MongoDB: ${error.message}`)
 	})
 
 if (config.NODE_ENV === 'production') {
