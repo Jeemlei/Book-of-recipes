@@ -1,28 +1,29 @@
 import express from 'express'
-import path from 'path'
-import config from './utils/config'
-import apolloServer from './graphql/apolloserver'
 import mongoose from 'mongoose'
+import config from './utils/config'
+import logger from './utils/logger'
+import apolloServer from './graphql/apolloserver'
+import path from 'path'
 
 const app = express()
 
 mongoose
 	.connect(config.MONGODB_URI as string)
 	.then((_result) => {
-		console.log('connected to MongoDB')
+		logger.info('connected to MongoDB')
 
 		apolloServer
 			.start()
 			.then((_result) => {
 				apolloServer.applyMiddleware({ app, path: '/api/graphql' })
-				console.log('ApolloServer running in path /api/graphql')
+				logger.info('ApolloServer running in path /api/graphql')
 			})
 			.catch((error: Error) => {
-				console.log('error connecting to MongoDB:', error.message)
+				logger.error(`error starting ApolloServer: ${error.message}`)
 			})
 	})
 	.catch((error: Error) => {
-		console.log('error connecting to MongoDB:', error.message)
+		console.log(`error connecting to MongoDB: ${error.message}`)
 	})
 
 if (config.NODE_ENV === 'production') {
