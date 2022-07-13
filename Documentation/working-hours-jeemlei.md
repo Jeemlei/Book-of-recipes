@@ -11,4 +11,5 @@
 | | 1 | Planning |
 | 12.7. | 1,5 | More brainstorming db, MongoDB setup |
 | 13.7. | 1 | Logging and tests |
-| Total | 12,5 | |
+| | 1 | Error handling middleware and fixing tests |
+| Total | 13,5 | |
