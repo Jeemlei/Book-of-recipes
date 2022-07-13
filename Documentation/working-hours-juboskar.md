@@ -9,5 +9,5 @@
 | 11.7. | 2 | Designing database schema |
 | | 1 | Planning |
 | 12.7. | 1 | graphql setup |
-| | 0.5 | configs, jest coverage |
+| 13.7. | 0.5 | configs, jest coverage |
 | Total | 12 | |
