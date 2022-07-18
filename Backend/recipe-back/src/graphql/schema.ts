@@ -2,6 +2,7 @@ import { gql } from 'apollo-server-express'
 
 export const typeDefs = gql`
 	type User {
+		id: String!
 		username: String!
 		name: String
 		recipe_ids: [String]
