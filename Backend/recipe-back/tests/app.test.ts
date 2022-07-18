@@ -5,10 +5,19 @@
 
 import supertest from 'supertest'
 import app from '../src/app'
+import mongooose from 'mongoose'
+import config from '../src/utils/config'
 
 const api = supertest(app)
 
-test('example test', async () => {
-	await api.get('/').expect(302)
-	expect.anything()
+afterAll(async () => {
+	await mongooose.connection.close()
+})
+
+describe('Routes', () => {
+	test('redirect root path to frontend', async () => {
+		const res = await api.get('/')
+		expect(res.status).toBe(302)
+		expect(res.header.location).toBe(`http://localhost:${config.FRONTEND_PORT}`)
+	})
 })
