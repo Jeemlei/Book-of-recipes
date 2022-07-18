@@ -10,4 +10,5 @@
 | | 1 | Planning |
 | 12.7. | 1 | graphql setup |
 | 13.7. | 0.5 | configs, jest coverage |
+| 18.7. | 0.5 | redux setup |
 | Total | 12 | |
