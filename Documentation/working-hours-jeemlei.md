@@ -12,4 +12,5 @@
 | 12.7. | 1,5 | More brainstorming db, MongoDB setup |
 | 13.7. | 1 | Logging and tests |
 | | 1 | Error handling middleware and fixing tests |
-| Total | 13,5 | |
+| 18.7. | 3,5 | GraphQL for creating and finding users |
+| Total | 17 | |
