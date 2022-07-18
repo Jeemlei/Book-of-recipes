@@ -13,4 +13,5 @@
 | 13.7. | 1 | Logging and tests |
 | | 1 | Error handling middleware and fixing tests |
 | 18.7. | 3,5 | GraphQL for creating and finding users |
-| Total | 17 | |
+| | 1 | Writing tests for GraphQL |
+| Total | 18 | |
