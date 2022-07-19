@@ -1,28 +1,10 @@
-import { UserInputError, ValidationError } from 'apollo-server-express'
 import userService from '../services/userService'
 
 const resolvers = {
 	Query: {
 		allUsers: async () => await userService.allUsers(),
-		findUser: async (
-			_root: unknown,
-			args: { id: string; username: string }
-		) => {
-			if (args.id) {
-				if (args.id.length !== 24) {
-					throw new UserInputError('id must be length 24', {
-						invalidArgs: args.id
-					})
-				}
-				return await userService.findUserById(args.id)
-			} else if (args.username) {
-				return await userService.findUserByUsername(args.username)
-			} else {
-				throw new ValidationError(
-					'findUser: one of the optional search arguments must be provided'
-				)
-			}
-		}
+		findUser: async (_root: unknown, args: { id: string; username: string }) =>
+			await userService.findUser(args.id, args.username)
 	},
 
 	Mutation: {

@@ -1,6 +1,8 @@
 import { User } from '../types'
-import UserSchema from '../models/user'
 import bcrypt from 'bcrypt'
+import UserSchema from '../models/user'
+import logger from '../utils/logger'
+import { UserInputError, ValidationError } from 'apollo-server-express'
 
 const createUser = async (
 	username: string,
@@ -30,17 +32,42 @@ const allUsers = async (): Promise<User[]> => {
 	return UserSchema.find({})
 }
 
-const findUserById = async (id: string) => {
-	return UserSchema.findById(id)
-}
+const findUser = async (id: string, username: string) => {
+	if (id && !username) {
+		if (id.length !== 24) {
+			logger.error(
+				`-User provided id with incorrect length\n--Expected 24; got ${id.length}\n--ID: ${id}`
+			)
+			throw new UserInputError(
+				`id must be length 24 (length was ${id.length})`,
+				{
+					invalidArgs: id
+				}
+			)
+		} else if (id.match(/[^0-9a-f]+/)) {
+			logger.error(`-User provided id with nonhexadecimal symbols\n--ID: ${id}`)
+			throw new UserInputError('id must only include hexadecimal symbols', {
+				invalidArgs: id
+			})
+		}
 
-const findUserByUsername = async (username: string) => {
-	return (await UserSchema.find({ username: username }))[0]
+		return await UserSchema.findById(id)
+	} else if (username && !id) {
+		return (await UserSchema.find({ username: username }))[0]
+	} else {
+		logger.error(
+			`-User did provide incorrect number of search arguments\n--Expected 1; got ${
+				Number(!!id) + Number(!!username)
+			}`
+		)
+		throw new ValidationError(
+			'findUser: one and oly one of the optional search arguments must be provided'
+		)
+	}
 }
 
 export default {
 	createUser,
 	allUsers,
-	findUserById,
-	findUserByUsername
+	findUser
 }
