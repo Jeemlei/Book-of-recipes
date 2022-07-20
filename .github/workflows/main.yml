@@ -9,7 +9,7 @@ on:
       - main
 
 env:
-  TEST_DB: 'mongodb+srv://localhost:27017'
+  TEST_DB: 'mongodb://localhost:27017'
 
 jobs:
   frontend:
@@ -47,3 +47,5 @@ jobs:
         run: npm run lint
       - name: jest
         run: npm test
+        env:
+          TEST_DB: 'mongodb://localhost:27017/test'
