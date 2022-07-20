@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+      
+env: 
+  TEST_DB: 'mongodb+srv://localhost:27017'
 
 jobs:
   frontend:
@@ -31,8 +34,6 @@ jobs:
         
   backend:
     runs-on: ubuntu-latest
-    env: 
-      TEST_DB: 'mongodb+srv://localhost:27017'
     defaults:
       run:
         working-directory: Backend/recipe-back
