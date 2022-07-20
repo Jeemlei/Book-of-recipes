@@ -9,10 +9,12 @@
 | 6.7. | 2 | Setting up foundations for unit and E2E testing, testing to actions |
 | 11.7. | 2 | Designing database schema |
 | | 1 | Planning |
-| 12.7. | 1,5 | More brainstorming db, MongoDB setup |
+| 12.7. | 1.5 | More brainstorming db, MongoDB setup |
 | 13.7. | 1 | Logging and tests |
 | | 1 | Error handling middleware and fixing tests |
-| 18.7. | 3,5 | GraphQL for creating and finding users |
+| 18.7. | 3.5 | GraphQL for creating and finding users |
 | | 1 | Writing tests for GraphQL |
 | 19.7. | 2 | Writing tests for GraphQL |
-| Total | 20 | |
+| 20.7. | 0.5 | Debugging Github Actions |
+| 21.7. | 0.5 | Added MongoDB to Github Actions |
+| Total | 21 | |
