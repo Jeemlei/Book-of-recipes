@@ -124,7 +124,7 @@ describe('GraphQL Query', () => {
 			expect(resultShort.data?.findUser).toBeNull()
 		})
 		//------------------------------------------------
-		test('findUser returns ValidationError incorrect number of search arguments provided', async () => {
+		test('findUser returns ValidationError when incorrect number of search arguments are provided', async () => {
 			const resultTooMany = await testServer.executeOperation({
 				query:
 					'query Query($id: String, $username: String) { findUser(id: $id, username: $username) {username} }',
