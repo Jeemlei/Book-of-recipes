@@ -11,4 +11,5 @@
 | 12.7. | 1 | graphql setup |
 | 13.7. | 0.5 | configs, jest coverage |
 | 18.7. | 0.5 | redux setup |
-| Total | 12 | |
+| 22.7. | 1.5 | backend log in feature|
+| Total | 13 | |
