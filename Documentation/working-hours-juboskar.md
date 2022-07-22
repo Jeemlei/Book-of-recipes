@@ -11,5 +11,6 @@
 | 12.7. | 1 | graphql setup |
 | 13.7. | 0.5 | configs, jest coverage |
 | 18.7. | 0.5 | redux setup |
-| 22.7. | 1.5 | backend log in feature|
-| Total | 13 | |
+| 21.7. | 1.5 | backend log in feature |
+| 22.7. | 2 | tests for login | 
+| Total | 16 | |
