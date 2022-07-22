@@ -2,6 +2,7 @@
 import mongoose from 'mongoose'
 import config from '../../src/utils/config'
 import UserSchema from '../../src/models/user'
+import bcrypt from 'bcrypt'
 import { ApolloServer } from 'apollo-server-express'
 import typeDefs from '../../src/graphql/schema'
 import resolvers from '../../src/graphql/resolvers'
@@ -17,10 +18,11 @@ beforeAll(async () => {
 
 beforeEach(async () => {
 	await UserSchema.remove({})
+	const psswrd_hash = await bcrypt.hash('password', 10)
 	await new UserSchema({
 		username: 'testuser',
 		name: 'Test User',
-		psswrd_hash: '$2b$10$2NHrQMiGkGeWKagbihAVse/84HLLeOTR/vpSiyWlmBALHzCVudcqm'
+		psswrd_hash
 	}).save()
 })
 
@@ -150,6 +152,90 @@ describe('GraphQL Query', () => {
 			)
 			expect(error?.extensions?.code).toBe('GRAPHQL_VALIDATION_FAILED')
 			expect(resultNotEnough.data?.findUser).toBeNull()
+		})
+	})
+})
+
+describe('GraphQL Mutation', () => {
+	describe('User', () => {
+		describe('a new user can be created', () => {
+			test('without name', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!) {
+						createUser(username: $username, password: $password) { 
+							id,
+							username, 
+							name 
+						} 
+					}`,
+					variables: {
+						username: 'newuser',
+						password: 'password'
+					}
+				})
+
+				expect(result.errors).toBeUndefined()
+				expect(result.data?.createUser.id).toBeDefined()
+				expect(result.data?.createUser.name).toBeNull()
+				expect(result.data?.createUser.username).toBe('newuser')
+			})
+			test('with name', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!, $name: String) {
+					createUser(username: $username, password: $password, name: $name) { 
+						id,
+						username, 
+						name 
+					} 
+				}`,
+					variables: {
+						username: 'newuser',
+						password: 'password',
+						name: 'New User'
+					}
+				})
+
+				expect(result.errors).toBeUndefined()
+				expect(result.data?.createUser.id).toBeDefined()
+				expect(result.data?.createUser.name).toBe('New User')
+				expect(result.data?.createUser.username).toBe('newuser')
+			})
+		})
+
+		test('new user can not be created if username exists', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String!, $password: String!) {
+					createUser(username: $username, password: $password) { 
+						id,
+						username, 
+						name 
+					} 
+				}`,
+				variables: {
+					username: 'testuser',
+					password: 'password'
+				}
+			})
+
+			const error = result.errors?.slice(0, 1)[0]
+
+			expect(error?.message).toBe(
+				'User validation failed: username: Error, expected `username` to be unique. Value: `testuser`'
+			)
+			expect(result.data?.createUser).toBeNull()
+		})
+
+		test('user can log in', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String!, $password: String!) {
+					login(username: $username, password: $password) { 
+						token
+					} 
+				}`,
+				variables: { username: 'testuser', password: 'password' }
+			})
+			expect(result.errors).toBeUndefined()
+			expect(result.data?.login.token).toBeDefined()
 		})
 	})
 })
