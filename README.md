@@ -1,4 +1,6 @@
 # Book of recipes
+![Tests](https://github.com/Jeemlei/Book-of-recipes/actions/workflows/main.yml/badge.svg)
+
 App for managing your favourite recipes.
 
 ## Documentation
