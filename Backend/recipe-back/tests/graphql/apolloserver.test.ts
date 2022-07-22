@@ -237,5 +237,39 @@ describe('GraphQL Mutation', () => {
 			expect(result.errors).toBeUndefined()
 			expect(result.data?.login.token).toBeDefined()
 		})
+
+		test('log in fails with wrong username', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String!, $password: String!) {
+					login(username: $username, password: $password) { 
+						token
+					} 
+				}`,
+				variables: { username: 'notexistinguser', password: 'password' }
+			})
+
+			const error = result.errors?.slice(0, 1)[0]
+
+			expect(error?.message).toBe('wrong username or password')
+			expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
+			expect(result.data?.login).toBeNull()
+		})
+
+		test('log in fails with wrong password', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String!, $password: String!) {
+					login(username: $username, password: $password) { 
+						token
+					} 
+				}`,
+				variables: { username: 'testuser', password: 'wrong' }
+			})
+
+			const error = result.errors?.slice(0, 1)[0]
+
+			expect(error?.message).toBe('wrong username or password')
+			expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
+			expect(result.data?.login).toBeNull()
+		})
 	})
 })
