@@ -12,3 +12,7 @@ export interface User {
 export interface Context {
 	currentUser: User
 }
+
+export interface JwtPayload {
+	id: string
+}

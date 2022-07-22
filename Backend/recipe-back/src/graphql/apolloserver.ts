@@ -4,10 +4,7 @@ import resolvers from './resolvers'
 import UserSchema from '../models/user'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../utils/config'
-
-interface JwtPayload {
-	id: string
-}
+import { JwtPayload } from '../types'
 
 const apolloServer = new ApolloServer({
 	typeDefs,
