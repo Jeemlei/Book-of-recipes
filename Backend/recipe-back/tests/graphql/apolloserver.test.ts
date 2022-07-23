@@ -153,12 +153,24 @@ describe('GraphQL Query', () => {
 			expect(error?.extensions?.code).toBe('GRAPHQL_VALIDATION_FAILED')
 			expect(resultNotEnough.data?.findUser).toBeNull()
 		})
+		//------------------------------------------------
+		test('loggedInUser returns null without authentication context', async () => {
+			const result = await testServer.executeOperation({
+				query: `query Query {
+						loggedInUser {
+							username  
+						}
+					}`
+			})
+			expect(result.errors).toBeUndefined()
+			expect(result.data?.loggedInUser).toBeNull()
+		})
 	})
 })
 
 describe('GraphQL Mutation', () => {
 	describe('User', () => {
-		describe('a new user can be created', () => {
+		describe('a new user can be created:', () => {
 			test('without name', async () => {
 				const result = await testServer.executeOperation({
 					query: `mutation Mutation($username: String!, $password: String!) {
@@ -201,7 +213,7 @@ describe('GraphQL Mutation', () => {
 				expect(result.data?.createUser.username).toBe('newuser')
 			})
 		})
-
+		//------------------------------------------------
 		test('new user can not be created if username exists', async () => {
 			const result = await testServer.executeOperation({
 				query: `mutation Mutation($username: String!, $password: String!) {
@@ -224,7 +236,7 @@ describe('GraphQL Mutation', () => {
 			)
 			expect(result.data?.createUser).toBeNull()
 		})
-
+		//------------------------------------------------
 		test('user can log in', async () => {
 			const result = await testServer.executeOperation({
 				query: `mutation Mutation($username: String!, $password: String!) {
@@ -237,39 +249,40 @@ describe('GraphQL Mutation', () => {
 			expect(result.errors).toBeUndefined()
 			expect(result.data?.login.token).toBeDefined()
 		})
-
-		test('log in fails with wrong username', async () => {
-			const result = await testServer.executeOperation({
-				query: `mutation Mutation($username: String!, $password: String!) {
+		//------------------------------------------------
+		describe('log in fails with wrong credentials:', () => {
+			test('username', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!) {
 					login(username: $username, password: $password) { 
 						token
 					} 
 				}`,
-				variables: { username: 'notexistinguser', password: 'password' }
+					variables: { username: 'notexistinguser', password: 'password' }
+				})
+
+				const error = result.errors?.slice(0, 1)[0]
+
+				expect(error?.message).toBe('wrong username or password')
+				expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
+				expect(result.data?.login).toBeNull()
 			})
-
-			const error = result.errors?.slice(0, 1)[0]
-
-			expect(error?.message).toBe('wrong username or password')
-			expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
-			expect(result.data?.login).toBeNull()
-		})
-
-		test('log in fails with wrong password', async () => {
-			const result = await testServer.executeOperation({
-				query: `mutation Mutation($username: String!, $password: String!) {
+			test('password', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!) {
 					login(username: $username, password: $password) { 
 						token
 					} 
 				}`,
-				variables: { username: 'testuser', password: 'wrong' }
+					variables: { username: 'testuser', password: 'wrong' }
+				})
+
+				const error = result.errors?.slice(0, 1)[0]
+
+				expect(error?.message).toBe('wrong username or password')
+				expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
+				expect(result.data?.login).toBeNull()
 			})
-
-			const error = result.errors?.slice(0, 1)[0]
-
-			expect(error?.message).toBe('wrong username or password')
-			expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
-			expect(result.data?.login).toBeNull()
 		})
 	})
 })
