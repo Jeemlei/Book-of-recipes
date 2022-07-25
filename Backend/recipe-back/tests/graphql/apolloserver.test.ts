@@ -9,7 +9,13 @@ import resolvers from '../../src/graphql/resolvers'
 
 const testServer = new ApolloServer({
 	typeDefs,
-	resolvers
+	resolvers,
+	context: async () => {
+		const currentUser = await UserSchema.findOne({ username: 'testuser' })
+		return {
+			currentUser
+		}
+	}
 })
 
 beforeAll(async () => {
@@ -154,16 +160,16 @@ describe('GraphQL Query', () => {
 			expect(resultNotEnough.data?.findUser).toBeNull()
 		})
 		//------------------------------------------------
-		test('loggedInUser returns null without authentication context', async () => {
+		test('me returns user from context', async () => {
 			const result = await testServer.executeOperation({
 				query: `query Query {
-						loggedInUser {
+						me {
 							username  
 						}
 					}`
 			})
 			expect(result.errors).toBeUndefined()
-			expect(result.data?.loggedInUser).toBeNull()
+			expect(result.data?.me.username).toBe('testuser')
 		})
 	})
 })

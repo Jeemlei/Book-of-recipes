@@ -6,7 +6,7 @@ const resolvers = {
 		allUsers: async () => await userService.allUsers(),
 		findUser: async (_root: unknown, args: { id: string; username: string }) =>
 			await userService.findUser(args.id, args.username),
-		loggedInUser: (_root: unknown, _args: unknown, context: Context) => {
+		me: (_root: unknown, _args: unknown, context: Context) => {
 			return context.currentUser
 		}
 	},
