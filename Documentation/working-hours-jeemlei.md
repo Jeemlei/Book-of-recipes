@@ -19,4 +19,5 @@
 | 21.7. | 0.5 | Added MongoDB to Github Actions |
 | 25.7. | 0.5 | Type refactoring |
 | 26.7. | 2 | Types and db schemas related to recipes |
-| Total | 23.5 | |
+| | 1 | Reviewing, testing and merging login |
+| Total | 24.5 | |
