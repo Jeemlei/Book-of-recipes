@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { User } from '../types'
+import { MongoUser, User } from '../types'
 import uniqueValidator from 'mongoose-unique-validator'
 
 const schema = new mongoose.Schema<User>(
@@ -10,11 +10,15 @@ const schema = new mongoose.Schema<User>(
 		recipe_ids: { type: [Number] } //Define populate when recipe schema is ready
 	},
 	{
-		toJSON: {
-			transform: (_document, returnedObject: User) => {
-				returnedObject.id = returnedObject._id?.toString()
-				delete returnedObject._id
-				delete returnedObject.__v
+		toObject: {
+			transform: (_document, returnedObject: MongoUser): User => {
+				return {
+					id: returnedObject._id.toString(),
+					username: returnedObject.username,
+					name: returnedObject.name,
+					psswrd_hash: returnedObject.psswrd_hash,
+					recipe_ids: returnedObject.recipe_ids
+				}
 			}
 		}
 	}

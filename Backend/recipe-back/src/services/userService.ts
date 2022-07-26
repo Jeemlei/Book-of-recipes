@@ -25,14 +25,17 @@ const createUser = async (
 			  }
 	)
 
-	return user.save()
+	return (await user.save()).toObject()
 }
 
 const allUsers = async (): Promise<User[]> => {
-	return UserSchema.find({})
+	return (await UserSchema.find({})).map((u) => u.toObject())
 }
 
-const findUser = async (id: string, username: string) => {
+const findUser = async (
+	id: string,
+	username: string
+): Promise<User | undefined> => {
 	if (id && !username) {
 		if (id.length !== 24) {
 			logger.error(
@@ -51,9 +54,11 @@ const findUser = async (id: string, username: string) => {
 			})
 		}
 
-		return await UserSchema.findById(id)
+		return (await UserSchema.findById(id))?.toObject()
 	} else if (username && !id) {
-		return (await UserSchema.find({ username: username }))[0]
+		return (await UserSchema.find({ username: username })).map((u) =>
+			u.toObject()
+		)[0]
 	} else {
 		logger.error(
 			`-User did provide incorrect number of search arguments\n--Expected 1; got ${
