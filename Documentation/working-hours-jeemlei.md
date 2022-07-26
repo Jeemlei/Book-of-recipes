@@ -17,4 +17,6 @@
 | 19.7. | 2 | Writing tests for GraphQL |
 | 20.7. | 0.5 | Debugging Github Actions |
 | 21.7. | 0.5 | Added MongoDB to Github Actions |
-| Total | 21 | |
+| 25.7. | 0.5 | Type refactoring |
+| 26.7. | 2 | Types and db schemas related to recipes |
+| Total | 23.5 | |
