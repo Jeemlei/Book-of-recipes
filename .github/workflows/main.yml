@@ -46,3 +46,4 @@ jobs:
         run: npm test
         env:
           TEST_DB: 'mongodb://localhost:27017/test'
+          JWT_SECRET: 'test_secret'

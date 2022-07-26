@@ -2,6 +2,8 @@ import { User } from '../types'
 import bcrypt from 'bcrypt'
 import UserSchema from '../models/user'
 import logger from '../utils/logger'
+import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../utils/config'
 import { UserInputError, ValidationError } from 'apollo-server-express'
 
 const createUser = async (
@@ -66,8 +68,35 @@ const findUser = async (id: string, username: string) => {
 	}
 }
 
+const login = async (
+	username: string,
+	password: string
+): Promise<{ token: string }> => {
+	if (!username || !password) {
+		throw new ValidationError('missing username or password')
+	}
+
+	const user = await UserSchema.findOne({ username })
+	const passwordCorrect =
+		user === null ? false : await bcrypt.compare(password, user.psswrd_hash)
+
+	if (!(user && passwordCorrect)) {
+		throw new UserInputError('wrong username or password')
+	}
+
+	const userForToken = {
+		username: user.username,
+		id: user._id
+	}
+
+	return {
+		token: jwt.sign(userForToken, JWT_SECRET as string, { expiresIn: '6h' })
+	}
+}
+
 export default {
 	createUser,
 	allUsers,
-	findUser
+	findUser,
+	login
 }
