@@ -13,4 +13,5 @@
 | 18.7. | 0.5 | redux setup |
 | 21.7. | 1.5 | backend log in feature |
 | 22.7. | 2 | tests for login | 
-| Total | 16 | |
+| 23.7. | 1 | more tests |
+| Total | 17 | |
