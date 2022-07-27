@@ -15,6 +15,6 @@
 | 22.7. | 2     | tests for login                                                                                        |
 | 23.7. | 1     | more tests                                                                                             |
 | 27.7. | 1.5   | update user backend feature                                                                            |
-| Total | 19.5  |                                                                                                        |
-|       |       |                                                                                                        |
+|       | 1     | tests for authentication                                                                               |
+| Total | 20.5  |                                                                                                        |
 
