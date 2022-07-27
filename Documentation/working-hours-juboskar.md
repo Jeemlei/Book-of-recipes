@@ -14,5 +14,7 @@
 | 21.7. | 1.5   | backend log in feature                                                                                 |
 | 22.7. | 2     | tests for login                                                                                        |
 | 23.7. | 1     | more tests                                                                                             |
-| Total | 18.0  |                                                                                                        |
+| 27.7. | 1.5   | update user backend feature                                                                            |
+| Total | 19.5  |                                                                                                        |
+|       |       |                                                                                                        |
 
