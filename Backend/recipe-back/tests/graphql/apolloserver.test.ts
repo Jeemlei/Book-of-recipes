@@ -2,13 +2,20 @@
 import mongoose from 'mongoose'
 import config from '../../src/utils/config'
 import UserSchema from '../../src/models/user'
+import bcrypt from 'bcrypt'
 import { ApolloServer } from 'apollo-server-express'
 import typeDefs from '../../src/graphql/schema'
 import resolvers from '../../src/graphql/resolvers'
 
 const testServer = new ApolloServer({
 	typeDefs,
-	resolvers
+	resolvers,
+	context: async () => {
+		const currentUser = await UserSchema.findOne({ username: 'testuser' })
+		return {
+			currentUser
+		}
+	}
 })
 
 beforeAll(async () => {
@@ -17,10 +24,11 @@ beforeAll(async () => {
 
 beforeEach(async () => {
 	await UserSchema.remove({})
+	const psswrd_hash = await bcrypt.hash('password', 10)
 	await new UserSchema({
 		username: 'testuser',
 		name: 'Test User',
-		psswrd_hash: '$2b$10$2NHrQMiGkGeWKagbihAVse/84HLLeOTR/vpSiyWlmBALHzCVudcqm'
+		psswrd_hash
 	}).save()
 })
 
@@ -124,7 +132,7 @@ describe('GraphQL Query', () => {
 			expect(resultShort.data?.findUser).toBeNull()
 		})
 		//------------------------------------------------
-		test('findUser returns ValidationError incorrect number of search arguments provided', async () => {
+		test('findUser returns ValidationError when incorrect number of search arguments are provided', async () => {
 			const resultTooMany = await testServer.executeOperation({
 				query:
 					'query Query($id: String, $username: String) { findUser(id: $id, username: $username) {username} }',
@@ -150,6 +158,137 @@ describe('GraphQL Query', () => {
 			)
 			expect(error?.extensions?.code).toBe('GRAPHQL_VALIDATION_FAILED')
 			expect(resultNotEnough.data?.findUser).toBeNull()
+		})
+		//------------------------------------------------
+		test('me returns user from context', async () => {
+			const result = await testServer.executeOperation({
+				query: `query Query {
+						me {
+							username  
+						}
+					}`
+			})
+			expect(result.errors).toBeUndefined()
+			expect(result.data?.me.username).toBe('testuser')
+		})
+	})
+})
+
+describe('GraphQL Mutation', () => {
+	describe('User', () => {
+		describe('a new user can be created:', () => {
+			test('without name', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!) {
+						createUser(username: $username, password: $password) { 
+							id,
+							username, 
+							name 
+						} 
+					}`,
+					variables: {
+						username: 'newuser',
+						password: 'password'
+					}
+				})
+
+				expect(result.errors).toBeUndefined()
+				expect(result.data?.createUser.id).toBeDefined()
+				expect(result.data?.createUser.name).toBeNull()
+				expect(result.data?.createUser.username).toBe('newuser')
+			})
+			test('with name', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!, $name: String) {
+					createUser(username: $username, password: $password, name: $name) { 
+						id,
+						username, 
+						name 
+					} 
+				}`,
+					variables: {
+						username: 'newuser',
+						password: 'password',
+						name: 'New User'
+					}
+				})
+
+				expect(result.errors).toBeUndefined()
+				expect(result.data?.createUser.id).toBeDefined()
+				expect(result.data?.createUser.name).toBe('New User')
+				expect(result.data?.createUser.username).toBe('newuser')
+			})
+		})
+		//------------------------------------------------
+		test('new user can not be created if username exists', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String!, $password: String!) {
+					createUser(username: $username, password: $password) { 
+						id,
+						username, 
+						name 
+					} 
+				}`,
+				variables: {
+					username: 'testuser',
+					password: 'password'
+				}
+			})
+
+			const error = result.errors?.slice(0, 1)[0]
+
+			expect(error?.message).toBe(
+				'User validation failed: username: Error, expected `username` to be unique. Value: `testuser`'
+			)
+			expect(result.data?.createUser).toBeNull()
+		})
+		//------------------------------------------------
+		test('user can log in', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String!, $password: String!) {
+					login(username: $username, password: $password) { 
+						token
+					} 
+				}`,
+				variables: { username: 'testuser', password: 'password' }
+			})
+			expect(result.errors).toBeUndefined()
+			expect(result.data?.login.token).toBeDefined()
+		})
+		//------------------------------------------------
+		describe('log in fails with wrong credentials:', () => {
+			test('username', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!) {
+					login(username: $username, password: $password) { 
+						token
+					} 
+				}`,
+					variables: { username: 'notexistinguser', password: 'password' }
+				})
+
+				const error = result.errors?.slice(0, 1)[0]
+
+				expect(error?.message).toBe('wrong username or password')
+				expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
+				expect(result.data?.login).toBeNull()
+			})
+			test('password', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String!, $password: String!) {
+					login(username: $username, password: $password) { 
+						token
+					} 
+				}`,
+					variables: { username: 'testuser', password: 'wrong' }
+				})
+
+				const error = result.errors?.slice(0, 1)[0]
+
+				expect(error?.message).toBe('wrong username or password')
+				expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
+				expect(result.data?.login).toBeNull()
+			})
 		})
 	})
 })

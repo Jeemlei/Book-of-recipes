@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   frontend:
@@ -32,9 +35,15 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
+      - uses: supercharge/mongodb-github-action@1.7.0
+        with:
+          mongodb-version: '5.0'
       - name: npm install
         run: npm install
       - name: lint
         run: npm run lint
       - name: jest
         run: npm test
+        env:
+          TEST_DB: 'mongodb://localhost:27017/test'
+          JWT_SECRET: 'test_secret'

@@ -12,6 +12,14 @@ export interface MongoUser extends Omit<User, 'id'> {
 	__v: number
 }
 
+export interface Context {
+	currentUser: User
+}
+
+export interface JwtPayload {
+	id: string
+}
+
 export interface UmbrellaTitle {
 	id: string
 	//Key as language identifier, e.g. "en" for english
