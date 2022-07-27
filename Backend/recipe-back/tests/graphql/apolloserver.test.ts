@@ -171,6 +171,19 @@ describe('GraphQL Query', () => {
 			expect(result.errors).toBeUndefined()
 			expect(result.data?.me.username).toBe('testuser')
 		})
+		//------------------------------------------------
+		test('me returns null if not authenticated', async () => {
+			await UserSchema.findOneAndRemove({ username: 'testuser' })
+			const result = await testServer.executeOperation({
+				query: `query Query {
+						me {
+							username  
+						}
+					}`
+			})
+			expect(result.errors).toBeUndefined()
+			expect(result.data?.me).toBeNull()
+		})
 	})
 })
 
@@ -289,6 +302,37 @@ describe('GraphQL Mutation', () => {
 				expect(error?.extensions?.code).toBe('BAD_USER_INPUT')
 				expect(result.data?.login).toBeNull()
 			})
+		})
+		//------------------------------------------------
+		test('user can delete account', async () => {
+			const result = await testServer.executeOperation({
+				query: `mutation {
+				deleteUser { 
+					username
+				} 
+			}`
+			})
+
+			expect(result.errors).toBeUndefined()
+			expect(result.data?.deleteUser.username).toBe('testuser')
+			expect(await UserSchema.collection.countDocuments()).toBe(0)
+		})
+		//------------------------------------------------
+		test('user can not delete account if not authenticated', async () => {
+			await UserSchema.findOneAndRemove({ username: 'testuser' })
+			const result = await testServer.executeOperation({
+				query: `mutation {
+				deleteUser { 
+					username
+				} 
+			}`
+			})
+
+			const error = result.errors?.slice(0, 1)[0]
+
+			expect(error?.message).toBe('not authenticated')
+			expect(error?.extensions?.code).toBe('UNAUTHENTICATED')
+			expect(result.data?.deleteUser).toBeNull()
 		})
 	})
 })

@@ -1,3 +1,4 @@
+import { AuthenticationError } from 'apollo-server-express'
 import userService from '../services/userService'
 import { Context } from '../types'
 
@@ -34,6 +35,13 @@ const resolvers = {
 			}
 		) => {
 			return await userService.login(args.username, args.password)
+		},
+		deleteUser: async (_root: unknown, _args: unknown, context: Context) => {
+			const currentUser = context.currentUser
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+			return await userService.deleteUser(currentUser.id)
 		}
 	}
 }

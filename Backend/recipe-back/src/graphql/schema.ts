@@ -21,6 +21,7 @@ export const typeDefs = gql`
 	type Mutation {
 		createUser(username: String!, name: String, password: String!): User
 		login(username: String!, password: String!): Token
+		deleteUser: User
 	}
 ` //When recipe is defined replace String in User recipe_ids
 
