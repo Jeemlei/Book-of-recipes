@@ -56,9 +56,8 @@ const findUser = async (
 
 		return (await UserSchema.findById(id))?.toObject()
 	} else if (username && !id) {
-		return (await UserSchema.find({ username: username })).map((u) =>
-			u.toObject()
-		)[0]
+		const result = (await UserSchema.find({ username: username }))[0]
+		return result ? result.toObject() : result
 	} else {
 		logger.error(
 			`-User did provide incorrect number of search arguments\n--Expected 1; got ${
