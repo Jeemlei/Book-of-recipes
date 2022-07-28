@@ -304,6 +304,107 @@ describe('GraphQL Mutation', () => {
 			})
 		})
 		//------------------------------------------------
+		describe('user can update:', () => {
+			test('username', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String) {
+					updateUser(username: $username) { 
+						username
+					} 
+				}`,
+					variables: { username: 'newusername' }
+				})
+
+				expect(result.errors).toBeUndefined()
+				expect(result.data?.updateUser.username).toBe('newusername')
+				expect(await UserSchema.collection.countDocuments()).toBe(1)
+			})
+			test('password', async () => {
+				const newPassword = 'newpassword'
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($password: String) {
+					updateUser(password: $password) { 
+						username
+					} 
+				}`,
+					variables: { password: newPassword }
+				})
+
+				const user = await UserSchema.findOne({ username: 'testuser' })
+				const psswrd_hash = user ? user.psswrd_hash : ''
+
+				expect(result.errors).toBeUndefined()
+				expect(await bcrypt.compare(newPassword, psswrd_hash)).toBe(true)
+				expect(await UserSchema.collection.countDocuments()).toBe(1)
+			})
+			test('name', async () => {
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($name: String) {
+					updateUser(name: $name) { 
+						username
+						name
+					} 
+				}`,
+					variables: { name: 'New Name' }
+				})
+
+				expect(result.errors).toBeUndefined()
+				expect(result.data?.updateUser.username).toBe('testuser')
+				expect(result.data?.updateUser.name).toBe('New Name')
+				expect(await UserSchema.collection.countDocuments()).toBe(1)
+			})
+			test('multiple values', async () => {
+				const newPassword = 'newpassword'
+				const result = await testServer.executeOperation({
+					query: `mutation Mutation($username: String, $name: String, $password: String) {
+					updateUser(username: $username, name: $name, password: $password) { 
+						username
+						name
+					} 
+				}`,
+					variables: {
+						username: 'newusername',
+						name: 'New Name',
+						password: 'newpassword'
+					}
+				})
+
+				const user = await UserSchema.findOne({ username: 'newusername' })
+				const psswrd_hash = user ? user.psswrd_hash : ''
+
+				expect(result.errors).toBeUndefined()
+				expect(await bcrypt.compare(newPassword, psswrd_hash)).toBe(true)
+				expect(result.data?.updateUser.username).toBe('newusername')
+				expect(result.data?.updateUser.name).toBe('New Name')
+
+				expect(await UserSchema.collection.countDocuments()).toBe(1)
+			})
+		})
+		//------------------------------------------------
+		test('user can not update account if not authenticated', async () => {
+			await UserSchema.findOneAndRemove({ username: 'testuser' })
+			const newPassword = 'newpassword'
+			const result = await testServer.executeOperation({
+				query: `mutation Mutation($username: String, $name: String, $password: String) {
+					updateUser(username: $username, name: $name, password: $password) { 
+						username
+						name
+					} 
+				}`,
+				variables: {
+					username: 'newusername',
+					name: 'New Name',
+					password: newPassword
+				}
+			})
+
+			const error = result.errors?.slice(0, 1)[0]
+
+			expect(error?.message).toBe('not authenticated')
+			expect(error?.extensions?.code).toBe('UNAUTHENTICATED')
+			expect(result.data?.updateUser).toBeNull()
+		})
+		//------------------------------------------------
 		test('user can delete account', async () => {
 			const result = await testServer.executeOperation({
 				query: `mutation {
