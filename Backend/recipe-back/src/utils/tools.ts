@@ -1,5 +1,6 @@
 import { UserInputError } from 'apollo-server-express'
 import logger from './logger'
+import fs from 'fs'
 
 const isString = (text: unknown): text is string => {
 	return typeof text === 'string' || text instanceof String
@@ -26,4 +27,24 @@ export const validateMongoId = (id: unknown): string => {
 		})
 	}
 	return id
+}
+
+/**
+ * Tool for initializing MongoDB from JSON file or Object.
+ * If both params are provided only the file will be used.
+ * @param {string} file - filepath of the .json file
+ * @param {object} object - JSON Object
+ */
+export const initDB = (
+	file?: string | undefined,
+	object?: object | undefined
+) => {
+	if (file) {
+		const rawdata = String(fs.readFileSync(file))
+		object = JSON.parse(rawdata) as object
+	} else if (!object) {
+		logger.info('No init data for db were provided')
+		return
+	}
+	console.log(object)
 }

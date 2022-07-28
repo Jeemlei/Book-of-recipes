@@ -1,5 +1,6 @@
 import userService from '../services/userService'
 import { Context } from '../types'
+import { initDB } from '../utils/tools'
 
 const resolvers = {
 	Query: {
@@ -34,6 +35,10 @@ const resolvers = {
 			}
 		) => {
 			return await userService.login(args.username, args.password)
+		},
+		initDB: (_root: unknown, args: { file: string }) => {
+			initDB(args.file)
+			return 'initDB() called'
 		}
 	}
 }
