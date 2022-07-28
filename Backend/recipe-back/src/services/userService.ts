@@ -35,14 +35,11 @@ const allUsers = async (): Promise<User[]> => {
 	return (await UserSchema.find({})).map((u) => u.toObject())
 }
 
-const findUser = async (
-	id: string,
-	username: string
-): Promise<User | undefined> => {
+const findUser = async (id: string, username: string): Promise<User | null> => {
 	if (id && !username) {
 		return await UserSchema.findById(validateMongoId(id))
 	} else if (username && !id) {
-		const result = (await UserSchema.find({ username: username }))[0]
+		const result = await UserSchema.findOne({ username: username })
 		return result ? result.toObject() : result
 	} else {
 		logger.error(
@@ -82,22 +79,42 @@ const login = async (
 	}
 }
 
-const deleteUser = async (id: string): Promise<User | undefined> => {
-	if (id.length !== 24) {
-		logger.error(
-			`-User provided id with incorrect length\n--Expected 24; got ${id.length}\n--ID: ${id}`
-		)
-		throw new UserInputError(`id must be length 24 (length was ${id.length})`, {
-			invalidArgs: id
-		})
-	} else if (id.match(/[^0-9a-f]+/)) {
-		logger.error(`-User provided id with nonhexadecimal symbols\n--ID: ${id}`)
-		throw new UserInputError('id must only include hexadecimal symbols', {
-			invalidArgs: id
-		})
+const updateUser = async (
+	id: string,
+	{
+		username,
+		password,
+		name
+	}: {
+		username: string
+		password: string
+		name: string
+	}
+): Promise<User> => {
+	const user = await UserSchema.findById(validateMongoId(id))
+	if (!user) {
+		throw new Error('user not found')
 	}
 
-	return (await UserSchema.findByIdAndRemove(id))?.toObject()
+	if (username) {
+		user.username = username
+	}
+
+	if (password) {
+		const saltRounds = 10
+		const passwordHash = await bcrypt.hash(password, saltRounds)
+		user.psswrd_hash = passwordHash
+	}
+
+	if (name) {
+		user.name = name
+	}
+
+	return (await user.save())?.toObject()
+}
+
+const deleteUser = async (id: string): Promise<User | undefined> => {
+	return (await UserSchema.findByIdAndRemove(validateMongoId(id)))?.toObject()
 }
 
 export default {
@@ -105,5 +122,6 @@ export default {
 	allUsers,
 	findUser,
 	login,
+	updateUser,
 	deleteUser
 }

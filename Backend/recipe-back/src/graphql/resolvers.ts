@@ -36,6 +36,21 @@ const resolvers = {
 		) => {
 			return await userService.login(args.username, args.password)
 		},
+		updateUser: async (
+			_root: unknown,
+			args: {
+				username: string
+				password: string
+				name: string
+			},
+			context: Context
+		) => {
+			const currentUser = context.currentUser
+			if (!currentUser) {
+				throw new AuthenticationError('not authenticated')
+			}
+			return await userService.updateUser(currentUser.id, args)
+		},
 		deleteUser: async (_root: unknown, _args: unknown, context: Context) => {
 			const currentUser = context.currentUser
 			if (!currentUser) {
