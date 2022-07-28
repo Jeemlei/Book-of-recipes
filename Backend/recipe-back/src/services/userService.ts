@@ -5,6 +5,7 @@ import logger from '../utils/logger'
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../utils/config'
 import { UserInputError, ValidationError } from 'apollo-server-express'
+import { validateMongoId } from '../utils/tools'
 
 const createUser = async (
 	username: string,
@@ -39,24 +40,7 @@ const findUser = async (
 	username: string
 ): Promise<User | undefined> => {
 	if (id && !username) {
-		if (id.length !== 24) {
-			logger.error(
-				`-User provided id with incorrect length\n--Expected 24; got ${id.length}\n--ID: ${id}`
-			)
-			throw new UserInputError(
-				`id must be length 24 (length was ${id.length})`,
-				{
-					invalidArgs: id
-				}
-			)
-		} else if (id.match(/[^0-9a-f]+/)) {
-			logger.error(`-User provided id with nonhexadecimal symbols\n--ID: ${id}`)
-			throw new UserInputError('id must only include hexadecimal symbols', {
-				invalidArgs: id
-			})
-		}
-
-		return (await UserSchema.findById(id))?.toObject()
+		return await UserSchema.findById(validateMongoId(id))
 	} else if (username && !id) {
 		const result = (await UserSchema.find({ username: username }))[0]
 		return result ? result.toObject() : result
