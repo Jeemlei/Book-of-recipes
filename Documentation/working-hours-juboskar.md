@@ -17,4 +17,6 @@
 | 27.7. | 1.5   | update user backend feature                                                                            |
 |       | 1     | tests for authentication                                                                               |
 | 28.7. | 2     | tests for update and delete user                                                                       |
-| Total | 22.5  |                                                                                                        |
+|       | 1.5   | refactor tests                                                                                         |
+| Total | 24.0  |                                                                                                        |
+
