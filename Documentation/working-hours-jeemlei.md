@@ -21,5 +21,5 @@
 | 26.7. | 2 | Types and db schemas related to recipes |
 | | 1 | Reviewing, testing and merging login |
 | 27.7. | 2 | Recipe related services |
-| 28.7. | 2 | Id validation tool ets. |
+| 28.7. | 2 | Id validation tool etc. |
 | Total | 28.5 | |
