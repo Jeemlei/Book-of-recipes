@@ -20,4 +20,6 @@
 | 25.7. | 0.5 | Type refactoring |
 | 26.7. | 2 | Types and db schemas related to recipes |
 | | 1 | Reviewing, testing and merging login |
-| Total | 24.5 | |
+| 27.7. | 2 | Recipe related services |
+| 28.7. | 2 | Id validation tool ets. |
+| Total | 28.5 | |
