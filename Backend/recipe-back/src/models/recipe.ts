@@ -29,7 +29,7 @@ const schema = new mongoose.Schema<Recipe>(
 					ref: 'Ingredient',
 					required: true
 				},
-				amout: { type: Number, required: true },
+				amount: { type: Number, required: true },
 				unit: { type: String, required: true }
 			}
 		],

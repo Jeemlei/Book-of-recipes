@@ -16,7 +16,9 @@ const apolloServer = new ApolloServer({
 				auth.substring(7),
 				JWT_SECRET as string
 			) as JwtPayload
-			const currentUser = await UserSchema.findById(decodedToken.id)
+			const currentUser = (
+				await UserSchema.findById(decodedToken.id)
+			)?.toObject()
 			return { currentUser }
 		}
 		return null

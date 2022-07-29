@@ -14,7 +14,7 @@ const createUser = async (
 	const saltRounds = 10
 	const passwordHash = await bcrypt.hash(password, saltRounds)
 
-	const user = new UserSchema(
+	const newUser = new UserSchema(
 		name
 			? {
 					username: username,
@@ -27,7 +27,7 @@ const createUser = async (
 			  }
 	)
 
-	return (await user.save()).toObject()
+	return (await newUser.save()).toObject()
 }
 
 const allUsers = async (): Promise<User[]> => {

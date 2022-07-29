@@ -2,7 +2,7 @@ export interface User {
 	id: string
 	username: string
 	name?: string
-	recipe_ids: number[] | Recipe[]
+	recipe_ids: string[] | Recipe[]
 }
 
 export interface MongoUser extends Omit<User, 'id'> {
@@ -20,10 +20,12 @@ export interface JwtPayload {
 	id: string
 }
 
+//Key as language identifier, e.g. "en" for english
+export type NameTranslations = Map<string, string>
+
 export interface UmbrellaTitle {
 	id: string
-	//Key as language identifier, e.g. "en" for english
-	name: Map<string, string>
+	name: NameTranslations
 }
 
 export interface MongoUmbrellaTitle extends Omit<UmbrellaTitle, 'id'> {
@@ -34,8 +36,7 @@ export interface MongoUmbrellaTitle extends Omit<UmbrellaTitle, 'id'> {
 
 export interface Ingredient {
 	id: string
-	//Key as language identifier, e.g. "en" for english
-	name: Map<string, string>
+	name: NameTranslations
 	recipe_id?: string | Recipe
 }
 
@@ -47,8 +48,7 @@ export interface MongoIngredient extends Omit<Ingredient, 'id'> {
 
 export interface Category {
 	id: string
-	//Key as language identifier, e.g. "en" for english
-	name: Map<string, string>
+	name: NameTranslations
 }
 
 export interface MongoCategory extends Omit<Category, 'id'> {
@@ -60,8 +60,7 @@ export interface MongoCategory extends Omit<Category, 'id'> {
 export interface Recipe {
 	id: string
 	owner_id: string | User
-	//Key as language identifier, e.g. "en" for english
-	name: Map<string, string>
+	name: NameTranslations
 	umbrella_id: string | UmbrellaTitle
 	cookingtime: number
 	servings: number
