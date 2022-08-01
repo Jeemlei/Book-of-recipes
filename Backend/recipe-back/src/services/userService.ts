@@ -15,7 +15,7 @@ const createUser = async (
 	const saltRounds = 10
 	const passwordHash = await bcrypt.hash(password, saltRounds)
 
-	const user = new UserSchema(
+	const newUser = new UserSchema(
 		name
 			? {
 					username: username,
@@ -28,18 +28,23 @@ const createUser = async (
 			  }
 	)
 
-	return user.save()
+	return (await newUser.save()).toObject()
 }
 
 const allUsers = async (): Promise<User[]> => {
-	return UserSchema.find({})
+	return (await UserSchema.find({})).map((u) => u.toObject())
 }
 
-const findUser = async (id: string, username: string) => {
+const findUser = async (
+	id: string,
+	username: string
+): Promise<User | null | undefined> => {
 	if (id && !username) {
-		return await UserSchema.findById(validateMongoId(id))
+		const result = await UserSchema.findById(validateMongoId(id))
+		return result ? result.toObject() : result
 	} else if (username && !id) {
-		return (await UserSchema.find({ username: username }))[0]
+		const result = await UserSchema.findOne({ username: username })
+		return result ? result.toObject() : result
 	} else {
 		logger.error(
 			`-User did provide incorrect number of search arguments\n--Expected 1; got ${
@@ -47,7 +52,7 @@ const findUser = async (id: string, username: string) => {
 			}`
 		)
 		throw new ValidationError(
-			'findUser: one and oly one of the optional search arguments must be provided'
+			'findUser: one and only one of the optional search arguments must be provided'
 		)
 	}
 }

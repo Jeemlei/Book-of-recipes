@@ -5,7 +5,41 @@ export const typeDefs = gql`
 		id: String!
 		username: String!
 		name: String
-		recipe_ids: [String]
+		recipe_ids: [String]!
+	}
+
+	type UmbrellaTitle {
+		id: String!
+		name: String!
+	}
+
+	type Ingredient {
+		id: String!
+		name: String!
+		recipe: Recipe!
+	}
+
+	type IngredientDefinition {
+		ingredient: Ingredient!
+		amout: Int!
+		unit: String!
+	}
+
+	type Category {
+		id: String!
+		name: String!
+	}
+
+	type Recipe {
+		id: String!
+		owner: User!
+		name: String!
+		umbrellaTitle: UmbrellaTitle!
+		cookingtime: Int!
+		servings: Int!
+		ingredients: [IngredientDefinition!]!
+		steps: [String!]!
+		categories: [Category!]!
 	}
 
 	type Token {
